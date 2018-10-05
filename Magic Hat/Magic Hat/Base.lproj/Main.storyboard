@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rwI-GQ-vRE">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="Yis-Th-pZi">
+            <objects>
+                <viewController id="rwI-GQ-vRE" customClass="ViewController" customModule="Magic_Hat" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XS8-lJ-QFd">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                            </arscnView>
+                            <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j32-VB-ajk">
+                                <rect key="frame" x="60" y="640" width="92" height="36"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="20"/>
+                                <state key="normal" title="Throw Ball"/>
+                                <connections>
+                                    <action selector="throwBall:" destination="rwI-GQ-vRE" eventType="touchUpInside" id="or3-ZX-WX9"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hC8-JL-mJL">
+                                <rect key="frame" x="300" y="640" width="54" height="36"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Magic"/>
+                                <connections>
+                                    <action selector="magic:" destination="rwI-GQ-vRE" eventType="touchUpInside" id="MVl-M9-afY"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="leading" secondItem="XS8-lJ-QFd" secondAttribute="leading" id="320-o8-hzy"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="height" secondItem="XS8-lJ-QFd" secondAttribute="height" id="FkX-Ae-cBI"/>
+                            <constraint firstItem="ryg-cL-9fz" firstAttribute="bottom" secondItem="j32-VB-ajk" secondAttribute="bottom" constant="60" id="QSQ-k4-bTy"/>
+                            <constraint firstItem="ryg-cL-9fz" firstAttribute="bottom" secondItem="hC8-JL-mJL" secondAttribute="bottom" constant="60" id="UPU-2U-xlb"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="width" secondItem="XS8-lJ-QFd" secondAttribute="width" id="Zkr-GD-HuD"/>
+                            <constraint firstItem="j32-VB-ajk" firstAttribute="leading" secondItem="ryg-cL-9fz" secondAttribute="leading" constant="60" id="iz7-Ih-6Bs"/>
+                            <constraint firstItem="ryg-cL-9fz" firstAttribute="trailing" secondItem="hC8-JL-mJL" secondAttribute="trailing" constant="60" id="ubX-vg-XEz"/>
+                            <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="ryg-cL-9fz" secondAttribute="bottom" id="wbI-eb-edr"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ryg-cL-9fz"/>
+                    </view>
+                    <connections>
+                        <outlet property="sceneView" destination="BrB-h1-WRS" id="BU5-jC-JHI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nra-vn-cJW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="117.18749999999999" y="-738.36017569546118"/>
+        </scene>
+    </scenes>
+</document>
