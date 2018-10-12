@@ -24,18 +24,30 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.showsStatistics = true
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/hat.scn")!
+        //let scene = SCNScene(named: "art.scnassets/hat2.scn")!
         
         // Set the scene to the view
-        sceneView.scene = scene
+        sceneView.scene = SCNScene()
     }
     
     @IBAction func throwBall(_ sender: Any) {
-        let ballShape = SCNSphere(radius: 0.2)
+        let ballShape = SCNSphere(radius: 0.03)
         let ballNode = SCNNode(geometry: ballShape)
-        ballNode.position = (sceneView.scene.rootNode.childNode(withName: "camera", recursively: true)?.position)!
-        print(String(describing: ballNode.position))
+        
+        let camera = sceneView.session.currentFrame?.camera
+        let cameraTransform = camera?.transform
+        
+        ballNode.simdTransform = cameraTransform!
+        
+        ballNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        
+        //print(String(describing: ballNode.position))
         sceneView.scene.rootNode.addChildNode(ballNode)
+        
+        guard let frame = sceneView.session.currentFrame else { return }
+        let camMatrix = SCNMatrix4(frame.camera.transform)
+        let direction = SCNVector3Make(-camMatrix.m31 * 1.50, -camMatrix.m32 * 2.0, -camMatrix.m33 * 1.50)
+        ballNode.physicsBody?.applyForce(direction, asImpulse: true)
     }
     
     @IBAction func magic(_ sender: Any) {
@@ -47,6 +59,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Create a session configuration
         let configuration = ARWorldTrackingConfiguration()
+        configuration.planeDetection = .horizontal
 
         // Run the view's session
         sceneView.session.run(configuration)
@@ -74,6 +87,23 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         return node
     }
 */
+    
+    private var planeNode: SCNNode?
+    
+    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
+        if (anchor is ARPlaneAnchor) {
+            guard let url = Bundle.main.url(forResource: "art.scnassets/hat2", withExtension: "scn") else {
+                NSLog("Could not find scene")
+                return nil
+            }
+            guard let node = SCNReferenceNode(url: url) else { return nil }
+            node.load()
+            planeNode = SCNNode()
+            planeNode?.addChildNode(node)
+            return planeNode
+        }
+        return nil
+    }
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
