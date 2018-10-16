@@ -30,9 +30,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene = SCNScene()
     }
     
+    var allBalls = [SCNNode]()
+    
     @IBAction func throwBall(_ sender: Any) {
         let ballShape = SCNSphere(radius: 0.03)
         let ballNode = SCNNode(geometry: ballShape)
+        allBalls.append(ballNode)
         
         let camera = sceneView.session.currentFrame?.camera
         let cameraTransform = camera?.transform
@@ -51,7 +54,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func magic(_ sender: Any) {
-        
+        for ball in allBalls {
+            let explosion = SCNParticleSystem(named: "art.scnassets/Explosion.scnp", inDirectory: nil)!
+            let explosionNode = SCNNode()
+            explosionNode.position = ball.presentation.position
+            sceneView.scene.rootNode.addChildNode(explosionNode)
+            explosionNode.addParticleSystem(explosion)
+            ball.removeFromParentNode()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
