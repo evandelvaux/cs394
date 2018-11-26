@@ -118,8 +118,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     // MARK: - Multiuser shared session
     
+    var alreadyPlaced = false
+    
     /// - Tag: PlaceCharacter
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
+        
+        if (alreadyPlaced) { return }
         
         // Hit test to find a place for a virtual object.
         guard let hitTestResult = sceneView
@@ -135,6 +139,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
             else { fatalError("can't encode anchor") }
         self.multipeerSession.sendToAllPeers(data)
+        
+        alreadyPlaced = true
     }
     
     /// - Tag: GetWorldMap
@@ -226,6 +232,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let configuration = ARWorldTrackingConfiguration()
         configuration.planeDetection = .horizontal
         sceneView.session.run(configuration, options: [.resetTracking, .removeExistingAnchors])
+        
+        alreadyPlaced = false
     }
     
     // MARK: - AR session management
