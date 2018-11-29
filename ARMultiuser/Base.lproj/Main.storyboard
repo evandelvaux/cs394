@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5Z7-YQ-SPj">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="5Z7-YQ-SPj">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -17,14 +17,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Welcome to Puzzle Quest!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z5U-yi-azc">
-                                <rect key="frame" x="268.91438506460986" y="393.44204624566009" width="228.00000000000006" height="24.000000000000057"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome to Puzzle Quest!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z5U-yi-azc">
+                                <rect key="frame" x="270" y="500" width="228" height="24"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4cw-Hb-nmU">
-                                <rect key="frame" x="340.72880771975724" y="605.44204624566055" width="88.999999999999886" height="30.000000000000227"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4cw-Hb-nmU">
+                                <rect key="frame" x="339.5" y="597" width="89" height="30"/>
                                 <state key="normal" title="Press to Play"/>
                                 <connections>
                                     <segue destination="7dh-A0-qGE" kind="show" id="I0H-vh-b6D"/>
@@ -33,7 +33,10 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="4cw-Hb-nmU" firstAttribute="top" secondItem="Z5U-yi-azc" secondAttribute="bottom" constant="188" id="z7O-4g-BN3"/>
+                            <constraint firstItem="4cw-Hb-nmU" firstAttribute="centerY" secondItem="Sp3-oi-94t" secondAttribute="centerY" constant="100" id="McK-Eu-MAy"/>
+                            <constraint firstItem="4cw-Hb-nmU" firstAttribute="centerX" secondItem="Sp3-oi-94t" secondAttribute="centerX" id="ZXL-Be-g4c"/>
+                            <constraint firstItem="Z5U-yi-azc" firstAttribute="centerX" secondItem="Sp3-oi-94t" secondAttribute="centerX" id="dQH-4H-wrh"/>
+                            <constraint firstItem="Z5U-yi-azc" firstAttribute="centerY" secondItem="Sp3-oi-94t" secondAttribute="centerY" id="wGP-PE-kPg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Q6N-0j-KaQ"/>
                     </view>
