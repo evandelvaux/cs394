@@ -69,8 +69,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     // MARK: - ARSCNViewDelegate
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
-        if let name = anchor.name, name.hasPrefix("panda") {
-            node.addChildNode(loadRedPandaModel())
+        if let name = anchor.name, name.hasPrefix("puzzle") {
+            node.addChildNode(loadPuzzle())
         }
     }
     
@@ -123,24 +123,39 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     /// - Tag: PlaceCharacter
     @IBAction func handleSceneTap(_ sender: UITapGestureRecognizer) {
         
-        if (alreadyPlaced) { return }
+        let tapLocation = sender.location(in: sceneView)
         
-        // Hit test to find a place for a virtual object.
-        guard let hitTestResult = sceneView
-            .hitTest(sender.location(in: sceneView), types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
-            .first
-            else { return }
+        if (alreadyPlaced) {
+            let hitResults = sceneView.hitTest(tapLocation, options: [:])
+            if let result = hitResults.first {
+                tapLight(toNode: result.node)
+            }
+            return
+        }
         
-        // Place an anchor for a virtual character. The model appears in renderer(_:didAdd:for:).
-        let anchor = ARAnchor(name: "panda", transform: hitTestResult.worldTransform)
-        sceneView.session.add(anchor: anchor)
-        
-        // Send the anchor info to peers, so they can place the same content.
-        guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
-            else { fatalError("can't encode anchor") }
-        self.multipeerSession.sendToAllPeers(data)
-        
-        alreadyPlaced = true
+        else {
+            // Hit test to find a place for a virtual object.
+            guard let hitTestResult = sceneView
+                .hitTest(tapLocation, types: [.existingPlaneUsingGeometry, .estimatedHorizontalPlane])
+                .first
+                else { return }
+            
+            // Place an anchor for a virtual character. The model appears in renderer(_:didAdd:for:).
+            let anchor = ARAnchor(name: "puzzle", transform: hitTestResult.worldTransform)
+            sceneView.session.add(anchor: anchor)
+            
+            // Send the anchor info to peers, so they can place the same content.
+            guard let data = try? NSKeyedArchiver.archivedData(withRootObject: anchor, requiringSecureCoding: true)
+                else { fatalError("can't encode anchor") }
+            self.multipeerSession.sendToAllPeers(data)
+            
+            alreadyPlaced = true
+        }
+    }
+    
+    private func tapLight(toNode node: SCNNode) {
+        print("!!Test")
+        node.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
     }
     
     /// - Tag: GetWorldMap
@@ -237,7 +252,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     // MARK: - AR session management
-    private func loadRedPandaModel() -> SCNNode {
+    private func loadPuzzle() -> SCNNode {
         let sceneURL = Bundle.main.url(forResource: "max", withExtension: "scn", subdirectory: "Assets.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
