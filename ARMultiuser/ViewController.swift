@@ -154,7 +154,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     }
     
     private func tapLight(toNode node: SCNNode) {
-        print("!!Test")
+        print("!!Color Changed")
         node.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
     }
     
@@ -253,9 +253,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     // MARK: - AR session management
     private func loadPuzzle() -> SCNNode {
-        let sceneURL = Bundle.main.url(forResource: "max", withExtension: "scn", subdirectory: "Assets.scnassets")!
+        let sceneURL = Bundle.main.url(forResource: "ButtonWall", withExtension: "scn", subdirectory: "Assets.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
+        
+        let redLight = referenceNode.childNode(withName: "Red", recursively: true)
+        redLight!.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        
         
         return referenceNode
     }
