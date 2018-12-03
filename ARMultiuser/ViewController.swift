@@ -19,6 +19,29 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @IBOutlet weak var sendMapButton: UIButton!
     @IBOutlet weak var mappingStatusLabel: UILabel!
     
+    struct trafficLight {
+        var top: SCNNode? = nil
+        var middle: SCNNode? = nil
+        var bottom: SCNNode? = nil
+        
+        func change(whichLight: String) {
+            var selected: SCNNode? = nil
+            switch whichLight {
+            case "Red":
+                selected = self.top
+            case "Yellow":
+                selected = self.middle
+            case "Green":
+                selected = self.bottom
+            default:
+                print("Other object: ", whichLight)
+                return
+            }
+            selected!.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        }
+    }
+    var light = trafficLight()
+    
     // MARK: - View Life Cycle
     
     var multipeerSession: MultipeerSession!
@@ -155,7 +178,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     private func tapLight(toNode node: SCNNode) {
         print("!!Color Changed")
-        node.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
+        print(node)
+        light.change(whichLight: node.name ?? "no name")
     }
     
     /// - Tag: GetWorldMap
@@ -257,9 +281,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         
-        let redLight = referenceNode.childNode(withName: "Red", recursively: true)
-        redLight!.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+        light.top = referenceNode.childNode(withName: "Red", recursively: true)!
+        light.middle = referenceNode.childNode(withName: "Yellow", recursively: true)!
+        light.bottom = referenceNode.childNode(withName: "Green", recursively: true)!
         
+        //redLight!.geometry?.firstMaterial?.diffuse.contents = UIColor.white
         
         return referenceNode
     }
