@@ -19,25 +19,82 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     @IBOutlet weak var sendMapButton: UIButton!
     @IBOutlet weak var mappingStatusLabel: UILabel!
     
+    func win() {
+        print("!! You win!")
+    }
+    
     struct trafficLight {
         var top: SCNNode? = nil
         var middle: SCNNode? = nil
         var bottom: SCNNode? = nil
         
-        func change(whichLight: String) {
+        var colors: [Int?] = [nil,nil,nil] // color of top, middle, bottom respectively
+            /* 0 - red
+             * 1 - yellow
+             * 2 - green
+             */
+        
+        let win_pattern: [Int] = [0,1,2] // colors needed to win
+        
+        let num_to_color: [UIColor] = [UIColor.red, UIColor.yellow, UIColor.green]
+        
+        mutating func set(top_col: Int, mid_col: Int, bot_col: Int) {
+            colors = [top_col,mid_col,bot_col]
+            
+            self.top!.geometry?.firstMaterial?.diffuse.contents = num_to_color[top_col]
+            self.middle!.geometry?.firstMaterial?.diffuse.contents = num_to_color[mid_col]
+            self.bottom!.geometry?.firstMaterial?.diffuse.contents = num_to_color[bot_col]
+        }
+        
+        // This function causes a light to cycle to the next color in a sequence
+        mutating func change(whichLight: String) {
             var selected: SCNNode? = nil
+            var index: Int? = nil // Index within 'colors' array
+            //var from_color_i: Int? = nil // The number code for the current color
             switch whichLight {
-            case "Red":
+            case "Top":
                 selected = self.top
-            case "Yellow":
+                //from_color_i = colors[0]
+                index = 0
+            case "Middle":
                 selected = self.middle
-            case "Green":
+                //from_color_i = colors!.mid
+                index = 1
+            case "Bottom":
                 selected = self.bottom
+                //from_color_i = colors!.bot
+                index = 2
             default:
                 print("Other object: ", whichLight)
-                return
+                return // Does nothing
             }
-            selected!.geometry?.firstMaterial?.diffuse.contents = UIColor.white
+            
+            var to_color: UIColor? = nil // Color we're changing to
+            switch colors[index!] {//from_color_i {
+            case 0:
+                to_color = UIColor.yellow
+                colors[index!] = 1
+            case 1:
+                to_color = UIColor.green
+                colors[index!] = 2
+            case 2:
+                to_color = UIColor.red
+                colors[index!] = 0
+            default:
+                to_color = UIColor.white // Should never be used
+            }
+            selected!.geometry?.firstMaterial?.diffuse.contents = to_color
+            
+        } // end func change
+        
+        func check_win() -> Bool {
+            if (colors == [nil,nil,nil]) {
+                return false
+            }
+            else if (colors == self.win_pattern) {
+                return true
+            }
+            return false
         }
     }
     var light = trafficLight()
@@ -180,6 +237,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         print("!!Color Changed")
         print(node)
         light.change(whichLight: node.name ?? "no name")
+        if (light.check_win()) {
+            win()
+        }
     }
     
     /// - Tag: GetWorldMap
@@ -281,9 +341,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
         
-        light.top = referenceNode.childNode(withName: "Red", recursively: true)!
-        light.middle = referenceNode.childNode(withName: "Yellow", recursively: true)!
-        light.bottom = referenceNode.childNode(withName: "Green", recursively: true)!
+        light.top = referenceNode.childNode(withName: "Top", recursively: true)!
+        light.middle = referenceNode.childNode(withName: "Middle", recursively: true)!
+        light.bottom = referenceNode.childNode(withName: "Bottom", recursively: true)!
+        light.set(top_col: 2, mid_col: 2, bot_col: 1) // red,yellow,green
         
         //redLight!.geometry?.firstMaterial?.diffuse.contents = UIColor.white
         
