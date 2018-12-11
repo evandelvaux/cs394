@@ -23,6 +23,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         print("!! You win!")
     }
     
+    //traffic light is a struct representing the first level of Puzzle Quest
     struct trafficLight {
         var top: SCNNode? = nil
         var middle: SCNNode? = nil
@@ -87,6 +88,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             
         } // end func change
         
+        //Checks unique win condition for traffic light
         func check_win() -> Bool {
             if (colors == [nil,nil,nil]) {
                 return false
@@ -97,6 +99,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
             return false
         }
     }
+    
+    //TODO 1: hardcoded to make level 1 object global. Needs to be changed so whatever level is selected is called here
     var light = trafficLight()
     
     // MARK: - View Life Cycle
@@ -208,6 +212,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         if (alreadyPlaced) {
             let hitResults = sceneView.hitTest(tapLocation, options: [:])
             if let result = hitResults.first {
+                //TODO 2: Hardcoded to use level one, needs to be dynamic
                 tapLight(toNode: result.node)
             }
             return
@@ -233,10 +238,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
         }
     }
     
+    //TODO 3: Hardcoded to only use level one node. Needs to be dynamic so that a user can load and interact with any level.
     private func tapLight(toNode node: SCNNode) {
         print("!!Color Changed")
         print(node)
         light.change(whichLight: node.name ?? "no name")
+        //TODO 4: Need to send new data of local modified puzzle  to all session members so they can have the same states of puzzle displayed
         if (light.check_win()) {
             win()
         }
@@ -274,6 +281,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
                 // Add anchor to the session, ARSCNView delegate adds visible content.
                 sceneView.session.add(anchor: anchor)
             }
+                //TODO 5: Check if data being recieved is a new set of states from peer. If it is, update local ARobject to reflect these new changes
             else {
                 print("unknown data recieved from \(peer)")
             }
@@ -337,6 +345,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, ARSessionDelegate {
     
     // MARK: - AR session management
     private func loadPuzzle() -> SCNNode {
+        
+        //TODO 6: Currently hardcoded to load level 1. Needs to be dynamic so that user can select and load different levels
         let sceneURL = Bundle.main.url(forResource: "ButtonWall", withExtension: "scn", subdirectory: "Assets.scnassets")!
         let referenceNode = SCNReferenceNode(url: sceneURL)!
         referenceNode.load()
